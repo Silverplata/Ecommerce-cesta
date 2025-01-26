@@ -162,7 +162,7 @@ const reiniciarCantidades = () => {
 const cantidadButtonClickHandler = (event) => {
     const sku = event.target.dataset.sku;
     //console.log(sku)
-    const input = document.querySelector(`.cantidad[data-sku="${sku}"]`);
+    const input = document.querySelector(`.cantidad[data-sku="${sku}"]`); //Buscar el input de cantidad asociado
 
     if (!input) {
         console.error(`No se encontró el input con data-sku="${sku}"`);
@@ -171,13 +171,14 @@ const cantidadButtonClickHandler = (event) => {
 
     let cantidad = parseInt(input.value) || 0;
 
+    // Determinar si se debe aumentar o disminuir la cantidad
     if (event.target.classList.contains('btn-mas')) {
         cantidad++;
     } else if (cantidad > 0) {
         cantidad--;
     }
 
-    input.value = cantidad;
+    input.value = cantidad; //Después de modificar la cantidad, se actualiza el <input> en la interfaz.
     carrito.actualizarUnidades(sku, cantidad);
 
     actualizarResumen();  // Se actualiza el total individual y el resumen general
