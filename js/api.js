@@ -7,7 +7,7 @@
 // API DE EJEMPLO
 
 const productosData = {
-    "currency": "€",
+    "currency": "$",
     "products": [
       {
         "SKU": "0K3QOSOV4V",
@@ -38,12 +38,17 @@ const productosData = {
         "SKU": "Z9UDFGDFQ8Y6X2P",
         "title": "Cristal templado",
         "price": "10.50"
+      },
+      {
+        "SKU": "T9UDFDSFAX2P",
+        "title": "Soporte para coche",
+        "price": "30.50"
       }
     ]
 };
 //esta función imita el comportamiento asíncrono de una llamada a una API o base de datos real, aunque en realidad está devolviendo datos locales inmediatamente
 const obtenerProductos = () => {
-    return Promise.resolve(productosData.products);
+    return Promise.resolve(productosData);
 }
 
 

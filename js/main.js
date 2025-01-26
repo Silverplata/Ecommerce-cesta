@@ -6,9 +6,14 @@ let productos;
 document.addEventListener("DOMContentLoaded", async () => {
     //inicializa el carrito y carga los productos cuando el DOM está listo
     carrito = new Carrito();
-    productos = await obtenerProductos();
+    const data = await obtenerProductos();
+    productos = data.products;
 
-    //console.log("Productos cargados:", productos); //Comprobaciones
+    // Actualiza la moneda del carrito si es necesario
+    if (carrito.carrito.currency !== data.currency) {
+        carrito.carrito.currency = data.currency;
+        carrito.guardarCarrito();
+    }
 
     //Muestra los productos en la página.
     if (!productos || productos.length === 0) {
