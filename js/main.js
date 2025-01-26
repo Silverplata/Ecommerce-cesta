@@ -28,65 +28,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Muestra los productos en la página, creando elementos HTML para cada uno.
 const mostrarProductos = () => {
     const listaProductos = document.querySelector('.lista-productos');
+    const template = document.getElementById('producto-template');
+    
     productos.forEach(producto => {
-        const productoElement = crearElementoProducto(producto);
+        const productoElement = template.content.cloneNode(true);
+        
+        productoElement.querySelector('.producto-info h3').textContent = producto.title;
+        productoElement.querySelector('.ref').textContent = `Ref: ${producto.SKU}`;
+        
+        const inputCantidad = productoElement.querySelector('.cantidad');
+        inputCantidad.dataset.sku = producto.SKU;
+        
+        productoElement.querySelectorAll('button').forEach(btn => {
+            btn.dataset.sku = producto.SKU;
+        });
+        
+        productoElement.querySelector('.precio').textContent = parseFloat(producto.price).toFixed(2);
+        
         listaProductos.appendChild(productoElement);
     });
 };
 
 // Función para crear un elemento de producto
-const crearElementoProducto = (producto) => {
-    const div = document.createElement('div');
-    div.classList.add('producto');
-    
-    // Crear la sección de información del producto
-    const productoInfo = document.createElement('div');
-    productoInfo.classList.add('producto-info');
-    const h3Title = document.createElement('h3');
-    h3Title.textContent = producto.title;
-    const h3Ref = document.createElement('h3');
-    h3Ref.classList.add('ref');
-    h3Ref.textContent = `Ref: ${producto.SKU}`;
-    productoInfo.appendChild(h3Title);
-    productoInfo.appendChild(h3Ref);
-    
-    // Crear la sección de cantidad
-    const cantidadContainer = document.createElement('div');
-    cantidadContainer.classList.add('cantidad-container');
-    const btnMenos = document.createElement('button');
-    btnMenos.classList.add('btn-menos');
-    btnMenos.dataset.sku = producto.SKU;
-    btnMenos.textContent = '−';
-    const inputCantidad = document.createElement('input');
-    inputCantidad.type = 'number';
-    inputCantidad.min = 0;
-    inputCantidad.value = 0;
-    inputCantidad.classList.add('cantidad');
-    inputCantidad.dataset.sku = producto.SKU;
-    const btnMas = document.createElement('button');
-    btnMas.classList.add('btn-mas');
-    btnMas.dataset.sku = producto.SKU;
-    btnMas.textContent = '+';
-    cantidadContainer.appendChild(btnMenos);
-    cantidadContainer.appendChild(inputCantidad);
-    cantidadContainer.appendChild(btnMas);
-    
-    // Crear los elementos de precio y total
-    const spanPrecio = document.createElement('span');
-    spanPrecio.classList.add('precio');
-    spanPrecio.textContent = parseFloat(producto.price).toFixed(2); // Convertir precio a número
-    const spanTotal = document.createElement('span');
-    spanTotal.classList.add('total');
-    spanTotal.textContent = '0';
 
-    // Añadir todo al div principal
-    div.appendChild(productoInfo);
-    div.appendChild(cantidadContainer);
-    div.appendChild(spanPrecio);
-    div.appendChild(spanTotal);
-
-    return div;
-}
 
 // Función para actualizar el resumen del carrito
 const actualizarResumen = () => {
