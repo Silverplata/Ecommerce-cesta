@@ -1,0 +1,88 @@
+:root {
+    /* creamos variables de colores*/
+    --gray-color: #7070702d; 
+    --yellow-color: rgb(187, 190, 1);
+    --lemon-color: rgba(187, 190, 1, 0.103);
+    --red-color: rgb(185, 0, 0);
+    --black-color: rgba(0, 0, 0, 0.863);
+    --blue-color: rgba(0, 102, 255, 0.863);
+    --max-width-container: 1200px;
+}
+html, body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/************************************************************************************************/
+/*************************************  HEADER  *************************************************/
+.header {
+    padding: 1rem;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--black-color);
+    color: whitesmoke;
+    border-top: 0.7rem solid var(--yellow-color);
+    border-bottom: 0.15rem solid var(--yellow-color);
+}
+
+.header__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--max-width-container);
+    margin: 0 auto;
+    padding: 0.3rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+.header__logo-wrapper {
+    color: var(--yellow-color);
+    letter-spacing: 0.3rem;
+    font-size: 1.5rem;
+    transition: all 0.3s ease-in-out;
+}
+/* Menu header */
+.header__nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 0.5rem;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.header__nav-menu li {
+    padding: 0.63rem 1.25rem;
+    border-radius: 0.31rem;
+    transition: background-color 0.5s ease, transform 0.3s ease;
+}
+
+.header__nav-menu a {
+    text-decoration: none;
+    color: whitesmoke;
+    font-weight: bold;
+    transition: color 0.5s ease;
+}
+
+.header__nav-menu li:hover {
+    background-color: var(--yellow-color);
+}
+
+/* Estilos para el resumen */
+.resumen {
+    margin-top: 20px;
+}
+
+.resumen-producto {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+}
+
+.total-general {
+    border-top: 2px solid #000;
+    margin-top: 10px;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}

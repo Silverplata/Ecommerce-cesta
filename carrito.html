@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compra - Agoodshop</title>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/compra.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header__wrapper">
+            <h1 class="header__logo">AGOODSHOP</h1>
+            <ul class="header__nav-menu">
+                <li class="header__menu-item"><a href="#">Tienda</a></li>
+                <li class="header__menu-item"><a href="#">Accesorios</a></li>
+                <li class="header__menu-item"><a href="#">Soporte</a></li>
+                <li class="header__menu-item--special"><a href="#">Contactar</a></li>
+            </ul>
+        </div>
+    </header>    
+    <main class="main-compra">
+        <div class="compra-container">
+            <div class="lista-productos">
+                <!-- Encabezado de la tabla de productos -->
+                <div class="producto encabezado">
+                    <h3>Producto</h3>
+                    <span>Cantidad</span>
+                    <span>Unidad</span>
+                    <span>Total</span>
+                </div>              
+                <!-- Los productos se cargarán dinámicamente aquí -->
+            </div>        
+            <!-- Resumen -->
+            <div class="resumen">
+                <h2>Resumen</h2>
+                <!-- El contenido del resumen se actualizará dinámicamente -->
+            </div>
+        </div>
+    </main>    
+    <script src="js/Carrito.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+
