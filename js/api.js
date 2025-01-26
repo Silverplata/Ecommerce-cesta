@@ -7,7 +7,7 @@
 // API DE EJEMPLO
 
 const productosData = {
-    "currency": "$",
+    "currency": "€",
     "products": [
       {
         "SKU": "0K3QOSOV4V",

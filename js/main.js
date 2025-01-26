@@ -1,10 +1,9 @@
-//
 let carrito;
 let productos;
 
 // Función para obtener los productos
 document.addEventListener("DOMContentLoaded", async () => {
-    //inicializa el carrito y carga los productos cuando el DOM está listo
+    // Inicializa el carrito y carga los productos cuando el DOM está listo
     carrito = new Carrito();
     const data = await obtenerProductos();
     productos = data.products;
@@ -15,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         carrito.guardarCarrito();
     }
 
-    //Muestra los productos en la página.
+    // Muestra los productos en la página.
     if (!productos || productos.length === 0) {
         console.warn("No hay productos disponibles.");
         return;
@@ -54,18 +53,13 @@ const mostrarProductos = () => {
     });
 };
 
-// Función para crear un elemento de producto
-
-
 // Función para actualizar el resumen del carrito
 const actualizarResumen = () => {
     const resumenElement = document.querySelector('.resumen');
     const carritoInfo = carrito.obtenerCarrito();
 
     // Limpiar el contenido previo del resumen
-    while (resumenElement.firstChild) {
-        resumenElement.removeChild(resumenElement.firstChild);
-    }
+    resumenElement.innerHTML = "";
 
     // Crear título "Resumen"
     const h2 = document.createElement('h2');
@@ -76,11 +70,7 @@ const actualizarResumen = () => {
 
     carritoInfo.products.forEach(producto => {
         if (producto.quantity > 0) {
-            // Verificación del precio y cantidad antes de calcular el total
-            //console.log(`Producto: ${producto.title}, Precio: ${producto.price}, Cantidad: ${producto.quantity}`);
-
-            const totalProducto = (parseFloat(producto.price) * producto.quantity).toFixed(2); // Asegurarse de calcular con float
-            //console.log(`Total del producto: ${totalProducto}`);
+            const totalProducto = (parseFloat(producto.price) * producto.quantity).toFixed(2);
 
             // Crear el contenedor del producto en el resumen
             const divResumenProducto = document.createElement('div');
@@ -133,82 +123,86 @@ const actualizarResumen = () => {
 
     // Actualizar los totales individuales en la lista de productos
     document.querySelectorAll('.producto').forEach(productoElement => {
-        // Para cada producto, verifica si contiene un elemento con la clase 'cantidad'. Si no lo tiene, ignora ese producto y pasa al siguiente.
-        if (!productoElement.querySelector('.cantidad')) {
+        if (!productoElement.querySelector('.cantidad')) return;
 
-            return;
-        }
-
-        const sku = productoElement.querySelector('.cantidad').dataset.sku; // Usa el SKU para obtener la información del producto del carrito.
+        const sku = productoElement.querySelector('.cantidad').dataset.sku;
         const producto = carrito.obtenerInformacionProducto(sku);
-        //Si se encuentra el producto en el carrito, busca el elemento con la clase 'total' dentro del producto actual.
+
         if (producto) {
             const totalElement = productoElement.querySelector('.total');
-            //Si existe el elemento 'total', actualiza su contenido con el nuevo total calculado
             if (totalElement) {
                 totalElement.textContent = 
                     (parseFloat(producto.price) * producto.quantity).toFixed(2) + ' ' + carritoInfo.currency;
             }
         }
     });
-}
+};
 
 // Función que reinicia las cantidades de los productos
-const reiniciarCantidades =() => {
+const reiniciarCantidades = () => {
     // Reiniciar las cantidades de los productos en el carrito
     carrito.obtenerCarrito().products.forEach(producto => {
-        producto.quantity = 0;  // Establecer la cantidad a cero
+        producto.quantity = 0;
     });
-    carrito.carrito.total = "0.00";  // Establecer el total a cero
+    carrito.carrito.total = "0.00";
 
     // Guardar el carrito actualizado
     carrito.guardarCarrito();  
 
     // Actualizar los inputs de cantidad en el DOM
     document.querySelectorAll('.cantidad').forEach(input => {
-        input.value = 0;  // Poner todos los inputs de cantidad a cero
+        input.value = 0;
     });
 
     // Actualizar el resumen con los valores reiniciados
     actualizarResumen();  
-}
+};
 
-// Eventos para los botones de cantidad
-document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('btn-mas') || event.target.classList.contains('btn-menos')) {
-        const sku = event.target.dataset.sku;
-        const input = document.querySelector(`.cantidad[data-sku="${sku}"]`);
+// Manejador de eventos para los botones de cantidad
+const cantidadButtonClickHandler = (event) => {
+    const sku = event.target.dataset.sku;
+    //console.log(sku)
+    const input = document.querySelector(`.cantidad[data-sku="${sku}"]`);
 
-        if (!input) {
-            console.error(`No se encontró el input con data-sku="${sku}"`);
-            return;
-        }
-
-        let cantidad = parseInt(input.value) || 0;
-        
-        if (event.target.classList.contains('btn-mas')) {
-            cantidad++;
-        } else if (cantidad > 0) {
-            cantidad--;
-        }
-
-        input.value = cantidad;
-        carrito.actualizarUnidades(sku, cantidad);
-
-        //console.log(carrito.obtenerCarrito()); // Comprobaciones
-
-        actualizarResumen();  // Aseguramos que el resumen se actualice
+    if (!input) {
+        console.error(`No se encontró el input con data-sku="${sku}"`);
+        return;
     }
-});
 
-// Evento para los inputs de cantidad
-document.addEventListener('input', (event) => {
+    let cantidad = parseInt(input.value) || 0;
+
+    if (event.target.classList.contains('btn-mas')) {
+        cantidad++;
+    } else if (cantidad > 0) {
+        cantidad--;
+    }
+
+    input.value = cantidad;
+    carrito.actualizarUnidades(sku, cantidad);
+
+    actualizarResumen();  // Se actualiza el total individual y el resumen general
+};
+
+// Manejador de eventos para los inputs de cantidad (si escribe directamente sin utilizar los botones)
+const cantidadInputHandler = (event) => {
     if (event.target.classList.contains('cantidad')) {
         const sku = event.target.dataset.sku;
         let cantidad = parseInt(event.target.value);
         cantidad = isNaN(cantidad) ? 0 : Math.max(0, cantidad);  // Evitar valores negativos
         event.target.value = cantidad;
         carrito.actualizarUnidades(sku, cantidad);
-        actualizarResumen();  // Aseguramos que el resumen se actualice
+
+        actualizarResumen();  // Se actualiza el total individual y el resumen general
+    }
+};
+
+// Asignar manejadores de eventos a los botones de `+` y `-`
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('btn-mas') || event.target.classList.contains('btn-menos')) {
+        cantidadButtonClickHandler(event);
     }
 });
+
+// Asignar manejador de eventos a los inputs de cantidad
+document.addEventListener('input', cantidadInputHandler);
+
