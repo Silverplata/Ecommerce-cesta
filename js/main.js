@@ -150,6 +150,9 @@ const reiniciarCantidades = () => {
     // Guardar el carrito actualizado
     carrito.guardarCarrito();  
 
+    // Eliminar la clave 'carrito' del localStorage
+    localStorage.removeItem('carrito');
+
     // Actualizar los inputs de cantidad en el DOM
     document.querySelectorAll('.cantidad').forEach(input => {
         input.value = 0;
