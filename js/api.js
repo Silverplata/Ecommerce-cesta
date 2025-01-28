@@ -1,11 +1,29 @@
-/*async function obtenerProductos() {
-    const response = await fetch('https://jsonblob.com/api/TU_ID_DE_JSON_BLOB');
-    const data = await response.json();
-    return data.products;
-}*/
 
+//###############################################################
+//ENDPOINT --> http://jsonblob.com/1333860688661241856
+//API --> https://jsonblob.com/api/jsonBlob/1333863785684983808
 // API DE EJEMPLO
 
+// Función para obtener los datos de la API
+async function obtenerProductos() {
+  try {
+    const productosData = await fetch('https://jsonblob.com/api/jsonBlob/1333863785684983808');
+    
+    if (!productosData.ok) {
+      throw new Error(`Error HTTP: ${productosData.status}`);
+    }
+
+    const datos = await productosData.json();
+    return datos; // Retorna el objeto con "currency" y "products"
+    
+  } catch (error) {
+    console.error("Error al obtener los productos:", error);
+    return null; // O maneja el error como prefieras
+  }
+}
+
+//###############################################################
+/*
 const productosData = {
     "currency": "€",
     "products": [
@@ -45,10 +63,10 @@ const productosData = {
         "price": "30.50"
       }
     ]
-};
+}
 //esta función imita el comportamiento asíncrono de una llamada a una API o base de datos real, aunque en realidad está devolviendo datos locales inmediatamente
 const obtenerProductos = () => {
     return Promise.resolve(productosData);
 }
-
+*/
 
