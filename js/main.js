@@ -4,6 +4,7 @@ let productos;
 // Función para obtener los productos
 document.addEventListener("DOMContentLoaded", async () => {
     // Inicializa el carrito y carga los productos cuando el DOM está listo
+    //Como productos solo se usa para leer información y no se modifica directamente en el código, no es necesario hacer una copia.
     carrito = new Carrito();
     const data = await obtenerProductos();
     productos = data.products;

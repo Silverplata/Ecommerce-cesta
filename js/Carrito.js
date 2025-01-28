@@ -68,8 +68,10 @@ class Carrito {
     }
 
     obtenerInformacionProducto(sku) {
-        return this.#productos.find(producto => producto.SKU === sku);  // Busca y devuelve la información de un producto específico en el carrito.
+        const producto = this.#productos.find(producto => producto.SKU === sku);
+        return producto ? { ...producto } : null;  // Devolvemos una copia del objeto
     }
+    
 }
 
 
