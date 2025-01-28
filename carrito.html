@@ -29,7 +29,22 @@
                     <span>Cantidad</span>
                     <span>Unidad</span>
                     <span>Total</span>
-                </div>              
+                </div>
+                <template id="producto-template">
+                    <div class="producto">
+                        <div class="producto-info">
+                            <h3></h3>
+                            <h3 class="ref"></h3>
+                        </div>
+                        <div class="cantidad-container">
+                            <button class="btn-menos">−</button>
+                            <input type="number" min="0" value="0" class="cantidad">
+                            <button class="btn-mas">+</button>
+                        </div>
+                        <span class="precio"></span>
+                        <span class="total">0</span>
+                    </div>
+                </template>              
                 <!-- Los productos se cargarán dinámicamente aquí -->
             </div>        
             <!-- Resumen -->
