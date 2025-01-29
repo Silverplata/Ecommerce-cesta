@@ -21,7 +21,7 @@ const obtenerProductos = async () => {
     console.error("Error al obtener los productos:", error);
     return null; // O maneja el error como prefieras
   }
-};
+}
 
 //###############################################################
 /*
