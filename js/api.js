@@ -5,7 +5,8 @@
 // API DE EJEMPLO
 
 // Función para obtener los datos de la API
-async function obtenerProductos() {
+
+const obtenerProductos = async () => {
   try {
     const productosData = await fetch('https://jsonblob.com/api/jsonBlob/1333863785684983808');
     
@@ -20,7 +21,7 @@ async function obtenerProductos() {
     console.error("Error al obtener los productos:", error);
     return null; // O maneja el error como prefieras
   }
-}
+};
 
 //###############################################################
 /*
