@@ -6,22 +6,23 @@
 
 // Función para obtener los datos de la API
 
-const obtenerProductos = async () => {
-  try {
-    const productosData = await fetch('https://jsonblob.com/api/jsonBlob/1333863785684983808');
-    
-    if (!productosData.ok) {
-      throw new Error(`Error HTTP: ${productosData.status}`);
-    }
-
-    const datos = await productosData.json();
-    return datos; // Retorna el objeto con "currency" y "products"
-    
-  } catch (error) {
-    console.error("Error al obtener los productos:", error);
-    return null; // O maneja el error como prefieras
-  }
+const obtenerProductos = () => {
+  return fetch('https://jsonblob.com/api/jsonBlob/1334128729072525312')
+    .then(productosData => {
+      if (!productosData.ok) {
+        throw new Error(`Error HTTP: ${productosData.status}`);
+      }
+      return productosData.json();
+    })
+    .then(datos => {
+      return datos; // Retorna el objeto con "currency" y "products"
+    })
+    .catch(error => {
+      console.error("Error al obtener los productos:", error);
+      return null; // O maneja el error como prefieras
+    });
 };
+
 
 //###############################################################
 /*
