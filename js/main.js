@@ -1,4 +1,4 @@
-let carrito;  // Variable para almacenar la instancia del carrito.
+let cesta;  // Variable para almacenar la instancia del cesta.
 let productos;  // Variable para almacenar la lista de productos obtenidos desde la API.
 
 // Función para obtener los productos cuando la página se haya cargado completamente.
@@ -12,21 +12,22 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             productos = data.products;  // Guardamos los productos obtenidos en la variable 'productos'.
-            carrito = new Carrito(productos); // Creamos una nueva instancia del carrito con los productos obtenidos.
+            cesta = new Carrito(productos); // Creamos una nueva instancia de la cesta con los productos obtenidos.
 
-            // Si la moneda del carrito no coincide con la moneda de la API, la actualizamos.
-            if (carrito.carrito.currency !== data.currency) {
-                carrito.carrito.currency = data.currency;
-                carrito.guardarCarrito();  // Guardamos el carrito con la nueva moneda.
+            // Si la moneda de la cesta no coincide con la moneda de la API, la actualizamos.
+            if (cesta.carrito.currency !== data.currency) {
+                cesta.carrito.currency = data.currency;
+                cesta.guardarCarrito();  // Guardamos la cesta con la nueva moneda.
             }
 
             // Mostramos los productos en la página.
             mostrarProductos();
-            // Actualizamos el resumen del carrito.
+            // Actualizamos el resumen de la cesta.
             actualizarResumen();
         })
         .catch(error => console.error("Error al obtener los productos:", error));
 });
+
 
 // Función para mostrar los productos en la página, creando elementos HTML para cada uno.
 const mostrarProductos = () => {
@@ -57,22 +58,22 @@ const mostrarProductos = () => {
     });
 };
 
-// Función para actualizar el resumen del carrito.
+// Función para actualizar el resumen de la cesta.
 const actualizarResumen = () => {
-    const resumenElement = document.querySelector('.resumen');  // Elemento contenedor del resumen del carrito.
-    const carritoInfo = carrito.obtenerCarrito();  // Obtenemos la información actual del carrito.
+    const resumenElement = document.querySelector('.resumen');  // Elemento contenedor del resumen de la cesta.
+    const carritoInfo = cesta.obtenerCarrito();  // Obtenemos la información actual de la cesta.
 
     // Limpiamos el contenido previo del resumen.
     resumenElement.innerHTML = "";
 
-    // Crear el título "Resumen" para el resumen del carrito.
+    // Crear el título "Resumen" para el resumen de la cesta.
     const h2 = document.createElement('h2');
     h2.textContent = 'Resumen';
     resumenElement.appendChild(h2);
 
-    let totalGeneral = 0;  // Variable para acumular el total general del carrito.
+    let totalGeneral = 0;  // Variable para acumular el total general de la cesta.
 
-    // Iteramos sobre los productos en el carrito para mostrarlos en el resumen.
+    // Iteramos sobre los productos en la cesta para mostrarlos en el resumen.
     carritoInfo.products.forEach(producto => {
         if (producto.quantity > 0) {
             const totalProducto = (parseFloat(producto.price) * producto.quantity).toFixed(2);  // Calculamos el total por producto.
@@ -96,7 +97,7 @@ const actualizarResumen = () => {
             divResumenProducto.appendChild(spanTotalProducto);
             resumenElement.appendChild(divResumenProducto);
 
-            // Acumulamos el total general del carrito.
+            // Acumulamos el total general de  cesta.
             totalGeneral += parseFloat(totalProducto);
         }
     });
@@ -122,7 +123,7 @@ const actualizarResumen = () => {
     divTotalGeneral.appendChild(spanTotalSuma);
     resumenElement.appendChild(divTotalGeneral);
 
-    // Creamos un botón para vaciar el carrito.
+    // Creamos un botón para vaciar la cesta.
     const botonReiniciar = document.createElement('button');
     botonReiniciar.textContent = 'Vaciar carrito';
     botonReiniciar.classList.add('btn-reiniciar');
@@ -134,7 +135,7 @@ const actualizarResumen = () => {
         if (!productoElement.querySelector('.cantidad')) return;
 
         const sku = productoElement.querySelector('.cantidad').dataset.sku;  // Obtenemos el SKU del producto.
-        const producto = carrito.obtenerInformacionProducto(sku);  // Obtenemos la información del producto.
+        const producto = cesta.obtenerInformacionProducto(sku);  // Obtenemos la información del producto.
 
         if (producto) {
             const totalElement = productoElement.querySelector('.total');
@@ -146,16 +147,16 @@ const actualizarResumen = () => {
     });
 };
 
-// Función que reinicia las cantidades de los productos en el carrito.
+// Función que reinicia las cantidades de los productos en la cesta.
 const reiniciarCantidades = () => {
     // Reiniciamos las cantidades de los productos a 0.
-    carrito.obtenerCarrito().products.forEach(producto => {
+    cesta.obtenerCarrito().products.forEach(producto => {
         producto.quantity = 0;
     });
-    carrito.total = "0.00";  // Reseteamos el total del carrito.
+    cesta.total = "0.00";  // Reseteamos el total de la cesta.
 
-    // Guardamos el carrito actualizado.
-    carrito.guardarCarrito();  
+    // Guardamos la cesta actualizada.
+    cesta.guardarCarrito();  
 
     // Eliminar la clave 'carrito' del localStorage.
     localStorage.removeItem('carrito');
@@ -189,7 +190,7 @@ const cantidadButtonClickHandler = (event) => {
     }
 
     input.value = cantidad;  // Actualizamos la cantidad en el input de la interfaz.
-    carrito.actualizarUnidades(sku, cantidad);  // Actualizamos la cantidad en el carrito.
+    cesta.actualizarUnidades(sku, cantidad);  // Actualizamos la cantidad en la cesta.
 
     actualizarResumen();  // Se actualiza el total individual y el resumen general.
 };
@@ -203,7 +204,7 @@ const cantidadInputHandler = (event) => {
 
         event.target.value = cantidad;  // Actualizamos el valor del input.
 
-        carrito.actualizarUnidades(sku, cantidad);  // Actualizamos la cantidad en el carrito.
+        cesta.actualizarUnidades(sku, cantidad);  // Actualizamos la cantidad en la cesta.
 
         actualizarResumen();  // Se actualiza el total individual y el resumen general.
     }
