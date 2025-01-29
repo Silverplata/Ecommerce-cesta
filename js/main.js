@@ -2,33 +2,37 @@ let carrito;
 let productos;
 
 // Función para obtener los productos
-document.addEventListener("DOMContentLoaded", async () => {
-    // Inicializa el carrito y carga los productos cuando el DOM está listo
-    //Como productos solo se usa para leer información y no se modifica directamente en el código, no es necesario hacer una copia.
+document.addEventListener("DOMContentLoaded", () => {
     carrito = new Carrito();
-    const data = await obtenerProductos();
-    productos = data.products;
+    obtenerProductos()
+        .then(data => {
+            productos = data.products;
 
-    // Actualiza la moneda del carrito si es necesario
-    if (carrito.carrito.currency !== data.currency) {
-        carrito.carrito.currency = data.currency;
-        carrito.guardarCarrito();
-    }
+            // Actualiza la moneda del carrito si es necesario
+            if (carrito.currency !== data.currency) {
+                carrito.currency = data.currency;
+                carrito.guardarCarrito();
+            }
 
-    // Muestra los productos en la página.
-    if (!productos || productos.length === 0) {
-        console.warn("No hay productos disponibles.");
-        return;
-    }
+            // Muestra los productos en la página.
+            if (!productos || productos.length === 0) {
+                console.warn("No hay productos disponibles.");
+                return;
+            }
 
-    mostrarProductos();
+            mostrarProductos();
   
-    productos.forEach(producto => {
-        carrito.actualizarUnidades(producto.SKU, 0); // Agregar productos al carrito con cantidad 0
-    });
+            productos.forEach(producto => {
+                carrito.actualizarUnidades(producto.SKU, 0); // Agregar productos al carrito con cantidad 0
+            });
 
-    actualizarResumen();
+            actualizarResumen();
+        })
+        .catch(error => {
+            console.error("Error al obtener los productos:", error);
+        });
 });
+
 
 // Muestra los productos en la página, creando elementos HTML para cada uno.
 const mostrarProductos = () => {
@@ -145,7 +149,7 @@ const reiniciarCantidades = () => {
     carrito.obtenerCarrito().products.forEach(producto => {
         producto.quantity = 0;
     });
-    carrito.carrito.total = "0.00";
+    carrito.total = "0.00";
 
     // Guardar el carrito actualizado
     carrito.guardarCarrito();  
